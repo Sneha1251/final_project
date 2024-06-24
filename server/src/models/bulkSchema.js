@@ -17,11 +17,11 @@ const bulkSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  successfulInserted: {
+  correctDataCount: {
     type: Number,
     required: true,
   },
-  failedDuringInserted: {
+  errorDataCount: {
     type: Number,
     required: true,
   },
