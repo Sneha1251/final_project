@@ -7,7 +7,7 @@ import fs from "fs";
 import Joi from "joi";
 
 class UploadFile {
-  async importUser(req, res) {
+  async importCsvData(req, res) {
     if (!req.file) {
       return res.status(400).send("No file uploaded");
     }
@@ -96,6 +96,37 @@ class UploadFile {
     } catch (err) {
       console.error("Server error:", err);
       res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  async showCsvData(req, res) {
+    try {
+      const allCsvData = await phoneSchema.find({}).limit(1000);
+      return res.send(allCsvData);
+    } catch (err) {
+      res.status(500).send("Internal Server Error");
+    }
+  }
+
+  async editCsvData(req, res) {
+    try {
+      // console.log("id", req.params.id);
+      const updatedCsvData = await phoneSchema.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: req.body }
+      );
+      return res.status(200).json(updatedCsvData);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  async deleteCsvData(req, res) {
+    try {
+      await phoneSchema.findByIdAndDelete(req.params.id);
+      return res.status(200).json({ message: "Csv Data deleted successfully" });
+    } catch (error) {
+      res.status(500).json(error);
     }
   }
 }
