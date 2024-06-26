@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Routing from "./routes.jsx";
+import Routing from "./Routes/routes.jsx";
 
 function App() {
   const [count, setCount] = useState(0);

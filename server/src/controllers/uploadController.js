@@ -1,7 +1,6 @@
 import phoneSchema from "../models/phoneSchema.js";
 import bulkSchema from "../models/bulkSchema.js";
 import bulkErrorSchema from "../models/bulkErrorSchema.js";
-import path from "path";
 import csv from "csv-parser";
 import fs from "fs";
 import Joi from "joi";
@@ -101,7 +100,7 @@ class UploadFile {
 
   async showCsvData(req, res) {
     try {
-      const allCsvData = await phoneSchema.find({}).limit(1000);
+      const allCsvData = await phoneSchema.find({}).limit(10);
       return res.send(allCsvData);
     } catch (err) {
       res.status(500).send("Internal Server Error");
@@ -127,6 +126,27 @@ class UploadFile {
       return res.status(200).json({ message: "Csv Data deleted successfully" });
     } catch (error) {
       res.status(500).json(error);
+    }
+  }
+
+  async addData(req, res) {
+    const { Brand, Model, ReleaseYear, Color, Price, Storage, OS } = req.body;
+
+    try {
+      const newData = await phoneSchema.create({
+        Brand,
+        Model,
+        ReleaseYear,
+        Color,
+        Price,
+        Storage,
+        OS,
+      });
+
+      // await newData.save();
+      res.status(201).json({ message: "Data added successfully" });
+    } catch (error) {
+      res.status(500).json({ error });
     }
   }
 }
